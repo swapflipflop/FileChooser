@@ -71,13 +71,18 @@ This app does _**Not**_ use Unity; instead using Android branch.
                 LaunchExtActivity();
                 ...
 ```
-
+  * The `bundleId` should be the Android app's package name, not the class name.
+  * The 1st get 'AndroidJavaClass' is always "com.unity3d.player.UnityPlayer", unless you wrote your own derivative class.
+    See [Unsolved] section.
+    * Unity app seems to only be able to launch the **main** activity in an app. Haven't figured out how to specify a non-main activity - something easily do-able in Android apps.
+      * Also haven't figured out how to activate a custom _intent_. That's why sample code is just activating default launch main activity intent, i.e. `getLaunchIntentForPackage`.
+  * The `Application.OpenURL(<url>)` statement actually works - it's an alternate way to launch default Android apps.
 * In newer Android API versions, need to include code to explcitly request for permissions (e.g.: READ_EXTERNAL_STORAGE), besides declaring in manifest file.
   * Refer to sample code in `onCreate`.
   * If not, you could go to app settings to _**manually** allow storage permissions_.
 
 ### Unsolved
-* Unity app C+ cannot easily retrive Android app/activity return value.
+* Unity app C+ cannot easily retrieve Android app/activity return value.
   * In Android app, it's a simple matter of calling `startActivityForResult`
   and adding a listener `onActivityResult` to receive the results.
   * For Unity, supposedly need to write a custom (inherited) Java activity to receive the results - then might as well use Java completely `=\`
